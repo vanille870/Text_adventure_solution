@@ -41,7 +41,7 @@ int main()
 
     cout << NavigatorP->CurrentLocation.LocationDescription << endl;
 
-    EnterAction(actionMapP);
+    EnterAction(actionMapP, NavigatorP);
 
     return 0;
 }

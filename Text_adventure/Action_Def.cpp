@@ -31,7 +31,7 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 	ActionMapClass::ActionMap["LOOKAROUND"] = 3;*/
 }
 
-void EnterAction(ActionMap* InputActionMapP)
+void EnterAction(ActionMap* InputActionMapP, Navigator*)
 {
 	string Action; 
 
@@ -48,17 +48,17 @@ void EnterAction(ActionMap* InputActionMapP)
 
 	case 2:
 		DisplayHelp();
-		EnterAction(InputActionMapP);
+		//EnterAction(InputActionMapP);
 		break;
 
 	case 3:
 		DisplayHelp();
-		EnterAction(InputActionMapP);
+		//EnterAction(InputActionMapP);
 		break;
 
 	default:
 		cout << "Not a valid action, enter again" << endl << endl;
-		EnterAction(InputActionMapP);
+		//EnterAction(InputActionMapP);
 		
 	}
 }
