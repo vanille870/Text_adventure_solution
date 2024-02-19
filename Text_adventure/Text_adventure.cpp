@@ -24,11 +24,22 @@ ActionMap* InitActionMap()
     return actionMapP; 
 }
 
+Navigator* InitNavigator(Location inputLocation)
+{
+    Navigator* NavigatorP = new Navigator();
+
+    NavigatorP->CurrentLocation = inputLocation;
+
+    return NavigatorP;
+}
+
 int main()
 {
     ActionMap* actionMapP = InitActionMap();
     LocationMap* locationMapP = InitLocationMap();
+    Navigator* NavigatorP = InitNavigator(locationMapP->LocationMap["cave"]);
 
+    cout << NavigatorP->CurrentLocation.LocationDescription << endl;
 
     EnterAction(actionMapP);
 

@@ -38,6 +38,12 @@ class LocationMap
 			 }
 };
 
+class Navigator
+{
+public:
+	Location CurrentLocation;
+};
+
 void CreateMapOfLocations(LocationMap* InputLocationMap);
 
 
