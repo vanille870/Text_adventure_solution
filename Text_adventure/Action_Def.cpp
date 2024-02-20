@@ -13,6 +13,7 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 {
 	InputActionMapP->LoadActionToMap(1, "TRAVEL");
 	InputActionMapP->LoadActionToMap(2, "HELP");
+	InputActionMapP->LoadActionToMap(3, "LOOKAROUND");
 
 
 	//Invalid action = 0
@@ -31,9 +32,23 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 	ActionMapClass::ActionMap["LOOKAROUND"] = 3;*/
 }
 
-void EnterAction(ActionMap* InputActionMapP, Navigator*)
+void DisplayHelp()
 {
-	string Action; 
+	cout << "List of actions you can do, actions are not case sensitive" << endl
+
+		 << "-Travel- to move to another area" << endl << endl;
+}
+
+void DisplayLocationDescription(Navigator* InputNavigator)
+{
+	cout << "current location:" << endl;
+	cout << InputNavigator->CurrentLocation.LocationDescription << endl;
+}
+
+
+void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap)
+{
+	string Action;
 
 	std::cout << "What do you want to do?" << endl;
 	cin >> Action;
@@ -43,35 +58,27 @@ void EnterAction(ActionMap* InputActionMapP, Navigator*)
 	{
 	case 1:
 		cout << "moving now" << endl;
-		PickDirection();
+		PickDirection(InputNavigator, InputLocationMap);
+		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
 		break;
 
 	case 2:
 		DisplayHelp();
-		//EnterAction(InputActionMapP);
+		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
 		break;
 
 	case 3:
-		DisplayHelp();
-		//EnterAction(InputActionMapP);
+		DisplayLocationDescription(InputNavigator);
+		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
 		break;
 
 	default:
 		cout << "Not a valid action, enter again" << endl << endl;
 		//EnterAction(InputActionMapP);
-		
+
 	}
+
+	EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
 }
 
-void DisplayHelp()
-{
-	cout << "List of actions you can do, actions are not case sensitive" << endl
-
-		 << "-Travel- to move to another area" << endl << endl;
-}
-
-void DisplayLocationDscription()
-{
-
-}
 

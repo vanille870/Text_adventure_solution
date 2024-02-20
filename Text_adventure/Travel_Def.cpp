@@ -8,11 +8,13 @@
 
 using namespace std;
 
-void PickDirection()
+void PickDirection(Navigator* InputNavigator, LocationMap* InputLocationMap)
 {
 	char Direction;
 	cout << "enter a direction (N,E,S,W), B to cancel" << endl;
 	cin >> Direction;
+
+	InputNavigator->CurrentLocation = InputLocationMap->LocationMap["cave"];
 
 	switch (toupper(Direction))
 	{
@@ -38,7 +40,7 @@ void PickDirection()
 
 	default:
 		cout << "Not a valid direction, enter again";
-		PickDirection(); 
+		PickDirection(InputNavigator, InputLocationMap); 
 
 	}
 }

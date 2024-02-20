@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <utility>
 #include "Locations_Declarations.h"
 
 
@@ -9,7 +10,7 @@
 class ActionMap
 {
 public: 
-	map<string, int> Map;
+	std::map<std::string, int> Map;
 
 	  void LoadActionToMap(int InputActionID, std::string InputActionName)
 	  {
@@ -21,6 +22,6 @@ void CreateMapOfActions(ActionMap*);
 
 int ReturnActionID(std::string);
 
-void EnterAction(ActionMap*, Navigator*);
+void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap);
 
 void DisplayHelp();

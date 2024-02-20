@@ -37,11 +37,9 @@ int main()
 {
     ActionMap* actionMapP = InitActionMap();
     LocationMap* locationMapP = InitLocationMap();
-    Navigator* NavigatorP = InitNavigator(locationMapP->LocationMap["cave"]);
+    Navigator* NavigatorP = InitNavigator(locationMapP->LocationMap["forest"]);
 
-    cout << NavigatorP->CurrentLocation.LocationDescription << endl;
-
-    EnterAction(actionMapP, NavigatorP);
+    EnterAction(actionMapP, NavigatorP, locationMapP);
 
     return 0;
 }
