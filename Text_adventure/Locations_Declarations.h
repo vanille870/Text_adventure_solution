@@ -7,9 +7,20 @@
 
 class Exit
 {
+public:
 	bool blocked;
-	char direction;
+	int ExitNumber;
 	std::string BlockedMessage;
+
+	Exit(bool InputClosed, int inputExitNumber, std::string inputBlockedMessage)
+	{
+
+	}
+
+	Exit()
+	{
+
+	}
 };
 
 class Location
@@ -19,7 +30,7 @@ public:
 	int LocationID;
 	std::string LocationName;
 	std::string LocationDescription;
-	std::pair <char, Exit> ExitPairs[3];
+	std::pair <int, Exit> ExitPairs[3];
 	//std::pair <int, std::string>
 
 
@@ -28,24 +39,28 @@ public:
 		LocationName = InputLocationName;
 		LocationDescription = InputDescription;
 		LocationID = InputID;
+
+		for (int i = 0; i == 3; i++)
+		{
+			Exit exit;
+			ExitPairs[i].first = i;
+			ExitPairs[i].second = exit;
+		}
 	}
 
 	Location()
 	{
 
 	}
-	
 };
 
 class LocationMap
 {
 public:      std::map<std::string, Location> LocationMap; 
-	         std::map<int, Location> LocationExitMap;
 
 			 void LoadLocationToMap(Location InputLocation)
 			 {
 				 this->LocationMap[InputLocation.LocationName] = InputLocation;
-				 this->LocationExitMap[InputLocation.LocationID] = InputLocation;
 			 }
 
 			 void LoadToExits(std::string InputName, Location inputLocation1)
@@ -54,6 +69,18 @@ public:      std::map<std::string, Location> LocationMap;
 			 }
 
 			 void Exits()
+			 {
+
+			 }
+
+			 void AddExitToLocation(int InputLocationID, Location InputLocation, int InputLocationNumber, bool InputExitOpen)
+			 {
+				 Exit TestExit(InputExitOpen, InputLocationNumber, "test");
+
+				 this->LocationMap["forsest"].ExitPairs[0].second.blocked = InputExitOpen;
+			 }
+
+			 void AddExitToLocation(int InputLocationID, Location InputLocation, int InputLocationNumber, bool InputExitOpen, std::string InputExitDescription)
 			 {
 
 			 }

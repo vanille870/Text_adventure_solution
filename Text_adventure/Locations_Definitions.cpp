@@ -6,6 +6,7 @@
 
 void CreateMapOfLocations(LocationMap* InputLocationMap) 
 {
-    InputLocationMap->LoadLocationToMap(Location(0,"forest", "this is a forest"));
+    Location forest(0, "forest", "this is a forest");
+    InputLocationMap->LoadLocationToMap(forest);
     InputLocationMap->LoadLocationToMap(Location(1, "cave", "This is a cave"));
 }
