@@ -39,6 +39,7 @@ int main()
     LocationMap* locationMapP = InitLocationMap();
     Navigator* NavigatorP = InitNavigator(locationMapP->LocationMap["forest"]);
 
+
     EnterAction(actionMapP, NavigatorP, locationMapP);
 
     return 0;

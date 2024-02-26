@@ -41,8 +41,14 @@ void DisplayHelp()
 
 void DisplayLocationDescription(Navigator* InputNavigator)
 {
+
 	cout << "current location:" << endl;
-	cout << InputNavigator->CurrentLocation.LocationDescription << endl;
+	cout << InputNavigator->CurrentLocation.LocationDescription << endl << endl;
+}
+
+void Testing(LocationMap* InputLocationMap)
+{
+
 }
 
 

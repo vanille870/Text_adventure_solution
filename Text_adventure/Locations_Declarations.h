@@ -8,18 +8,23 @@
 class Exit
 {
 public:
-	bool blocked;
-	int ExitNumber;
+	bool Open;
+	char ExitDirection;
 	std::string BlockedMessage;
+	std::string ExitLocation;
 
-	Exit(bool InputClosed, int inputExitNumber, std::string inputBlockedMessage)
+	Exit(bool InputIfOpen, int InputExitNumber, std::string InputBlockedMessage)
 	{
-
+		Open = InputIfOpen;
+		ExitDirection = InputExitNumber;
+		BlockedMessage = InputBlockedMessage;
 	}
 
-	Exit()
+	Exit() 
 	{
-
+		Open = false;
+		ExitDirection = 'S';
+		BlockedMessage = "exit is not set   ";
 	}
 };
 
@@ -30,7 +35,7 @@ public:
 	int LocationID;
 	std::string LocationName;
 	std::string LocationDescription;
-	std::pair <int, Exit> ExitPairs[3];
+	std::map <char, Exit> ExitMap;
 	//std::pair <int, std::string>
 
 
@@ -40,60 +45,89 @@ public:
 		LocationDescription = InputDescription;
 		LocationID = InputID;
 
-		for (int i = 0; i == 3; i++)
-		{
-			Exit exit;
-			ExitPairs[i].first = i;
-			ExitPairs[i].second = exit;
-		}
+		Exit exit1;
+		ExitMap['N'] = exit1;
+
+		Exit exit2;
+		ExitMap['E'] = exit2;
+
+		Exit exit3; 
+		ExitMap['S'] = exit3;
+
+		Exit exit4; 
+		ExitMap['W'] = exit4;
 	}
 
 	Location()
 	{
-
+		LocationID = 1;
 	}
 };
 
 class LocationMap
 {
-public:      std::map<std::string, Location> LocationMap; 
+public:     
+	std::map<std::string, Location> LocationMap; 
 
 			 void LoadLocationToMap(Location InputLocation)
 			 {
 				 this->LocationMap[InputLocation.LocationName] = InputLocation;
 			 }
 
-			 void LoadToExits(std::string InputName, Location inputLocation1)
+			 //for always closed exits
+			 void AddAlwaysClosedExitToLocation(std::string LocationName, std::string InputBlockedMessage, char InputExitDirction)
 			 {
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].Open = false;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].BlockedMessage = InputBlockedMessage;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitDirection = InputExitDirction;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitLocation = "No location: error if shown";
+			 }
+
+			 //for always open exits
+			 void AddAlwaysOpenExitToLocation(std::string LocationName, std::string InputExitLocation, char InputExitDirction)
+			 {
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].Open = true;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].BlockedMessage = "Should not be blocked";
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitDirection = InputExitDirction;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitLocation = InputExitLocation;
 
 			 }
 
-			 void Exits()
+			 void AddExitToLocation(std::string LocationName, std::string InputExitLocation, std::string InputBlockedMessage, char InputExitDirction, bool InputExitOpen)
 			 {
-
-			 }
-
-			 void AddExitToLocation(int InputLocationID, Location InputLocation, int InputLocationNumber, bool InputExitOpen)
-			 {
-				 Exit TestExit(InputExitOpen, InputLocationNumber, "test");
-
-				 this->LocationMap["forsest"].ExitPairs[0].second.blocked = InputExitOpen;
-			 }
-
-			 void AddExitToLocation(int InputLocationID, Location InputLocation, int InputLocationNumber, bool InputExitOpen, std::string InputExitDescription)
-			 {
-
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].Open = InputExitOpen;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].BlockedMessage = InputBlockedMessage;
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitDirection = InputExitDirction; 
 			 }
 };
+
 
 class Navigator
 {
 public:
 	Location CurrentLocation;
 
-	void ChangeLocation(Location inputLocation1, std::map<std::string, Location>)
+	void ChangeLocation(std::map<std::string, Location> InputMap, char InputExitDirction)
 	{
 
+		Exit targetExit = this->CurrentLocation.ExitMap[InputExitDirction];
+
+
+		if (targetExit.Open == false)
+		{
+			std::cout << CurrentLocation.ExitMap[InputExitDirction].BlockedMessage << std::endl << std::endl;
+		}
+
+		else
+		{
+			std::cout << "moving..." << std::endl << std::endl;
+
+			std::string ExitLocationName;
+
+			ExitLocationName = targetExit.ExitLocation;
+
+			this->CurrentLocation = InputMap[ExitLocationName];
+		}
 	}
 };
 

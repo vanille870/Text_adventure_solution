@@ -14,32 +14,34 @@ void PickDirection(Navigator* InputNavigator, LocationMap* InputLocationMap)
 	cout << "enter a direction (N,E,S,W), B to cancel" << endl;
 	cin >> Direction;
 
-	InputNavigator->CurrentLocation = InputLocationMap->LocationMap["cave"];
-
-	switch (toupper(Direction))
+	switch (toupper(Direction)) 
 	{
 	case 'N':
-		cout << "north";
+
+		InputNavigator->ChangeLocation(InputLocationMap->LocationMap, 'N');
+
 		break;
 
 	case 'E':
-		cout << "east";
+
+		InputNavigator->ChangeLocation(InputLocationMap->LocationMap, 'E');
+
 		break;
 
 	case 'S':
-		cout << "south";
+
+		InputNavigator->ChangeLocation(InputLocationMap->LocationMap, 'S');
+
 		break;
 
 	case 'W':
-		cout << "west";
-		break;
 
-	case 'B':
-		cout << "west";
+		InputNavigator->ChangeLocation(InputLocationMap->LocationMap, 'W');
+
 		break;
 
 	default:
-		cout << "Not a valid direction, enter again";
+		cout << "Not a valid direction, enter again" << endl;
 		PickDirection(InputNavigator, InputLocationMap); 
 
 	}

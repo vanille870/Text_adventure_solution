@@ -25,3 +25,5 @@ int ReturnActionID(std::string);
 void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap);
 
 void DisplayHelp();
+
+void Testing(LocationMap* InputLocationMap);
