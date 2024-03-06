@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <WorldObjects_Declarations.h>
 
 
 class Exit
@@ -36,6 +37,7 @@ public:
 	std::string LocationName;
 	std::string LocationDescription;
 	std::map <char, Exit> ExitMap;
+	std::map <std::string, WorldObject> ObjectMap;
 	//std::pair <int, std::string>
 
 
@@ -62,6 +64,19 @@ public:
 	{
 		LocationID = 1;
 	}
+
+
+	std::string FindObjectInLocation(std::string InputObjectName)
+	{
+		auto it = this->ObjectMap.find(InputObjectName);
+
+		if (it == ObjectMap.end())
+		{
+			return "There's no such object here dummy";
+		}
+
+		return (it->second).LookMessage; 
+	}
 };
 
 class LocationMap
@@ -77,19 +92,13 @@ public:
 			 //for always closed exits
 			 void AddAlwaysClosedExitToLocation(std::string LocationName, std::string InputBlockedMessage, char InputExitDirction)
 			 {
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].Open = false;
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].BlockedMessage = InputBlockedMessage;
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitDirection = InputExitDirction;
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitLocation = "No location: error if shown";
+				 AddExitToLocation(LocationName, "No location: error if shown", InputBlockedMessage, InputExitDirction, false);
 			 }
 
 			 //for always open exits
 			 void AddAlwaysOpenExitToLocation(std::string LocationName, std::string InputExitLocation, char InputExitDirction)
 			 {
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].Open = true;
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].BlockedMessage = "Should not be blocked";
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitDirection = InputExitDirction;
-				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitLocation = InputExitLocation;
+				 AddExitToLocation(LocationName, InputExitLocation, "should not be blocked", InputExitDirction, true);
 
 			 }
 
@@ -98,6 +107,16 @@ public:
 				 this->LocationMap[LocationName].ExitMap[InputExitDirction].Open = InputExitOpen;
 				 this->LocationMap[LocationName].ExitMap[InputExitDirction].BlockedMessage = InputBlockedMessage;
 				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitDirection = InputExitDirction; 
+				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitLocation = InputExitLocation;
+			 }
+
+			 void AddObjectToLocation(std::string LocationName, std::string InputObjectName, std::string InputObjectLookMessage)
+			 {
+				 WorldObject worldObject;
+
+				 worldObject.ObjectName = InputObjectName;
+				 worldObject.LookMessage = InputObjectLookMessage;
+				 this->LocationMap[LocationName].ObjectMap[InputObjectName] = worldObject;
 			 }
 };
 
@@ -120,13 +139,13 @@ public:
 
 		else
 		{
-			std::cout << "moving..." << std::endl << std::endl;
-
 			std::string ExitLocationName;
 
 			ExitLocationName = targetExit.ExitLocation;
 
 			this->CurrentLocation = InputMap[ExitLocationName];
+
+			std::cout << "moving to...  " << ExitLocationName <<  std::endl << std::endl; 
 		}
 	}
 };

@@ -133,11 +133,13 @@
     <ClCompile Include="Locations_Definitions.cpp" />
     <ClCompile Include="Text_adventure.cpp" />
     <ClCompile Include="Travel_Def.cpp" />
+    <ClCompile Include="WorldObjects_Def.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action_Declarations.h" />
     <ClInclude Include="Locations_Declarations.h" />
     <ClInclude Include="Travel_Declarations.h" />
+    <ClInclude Include="WorldObjects_Declarations.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

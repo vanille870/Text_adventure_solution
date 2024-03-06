@@ -14,6 +14,8 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 	InputActionMapP->LoadActionToMap(1, "TRAVEL");
 	InputActionMapP->LoadActionToMap(2, "HELP");
 	InputActionMapP->LoadActionToMap(3, "LOOKAROUND");
+	InputActionMapP->LoadActionToMap(4, "LOOKOBJECT");
+	InputActionMapP->LoadActionToMap(5, "USEOBJECT");
 
 
 	//Invalid action = 0
@@ -46,9 +48,13 @@ void DisplayLocationDescription(Navigator* InputNavigator)
 	cout << InputNavigator->CurrentLocation.LocationDescription << endl << endl;
 }
 
-void Testing(LocationMap* InputLocationMap)
+void LookAtObject( Navigator* InputNavigator)
 {
+	std::string tempString;
 
+	cout << "what are you looking at?" << endl << endl;
+	cin >> tempString;
+	cout << "object: " << InputNavigator->CurrentLocation.FindObjectInLocation(tempString) << endl;
 }
 
 
@@ -76,6 +82,11 @@ void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, Location
 	case 3:
 		DisplayLocationDescription(InputNavigator);
 		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
+		break;
+
+	case 4:
+		LookAtObject(InputNavigator);
+
 		break;
 
 	default:
