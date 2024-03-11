@@ -54,7 +54,15 @@ void LookAtObject( Navigator* InputNavigator)
 
 	cout << "what are you looking at?" << endl << endl;
 	cin >> tempString;
-	cout << "object: " << InputNavigator->CurrentLocation.FindObjectInLocation(tempString) << endl;
+	cout << "object: " << InputNavigator->CurrentLocation.FindObjectInLocation(tempString, false) << endl;
+}
+
+void UseObject(Navigator* InputNavigator)
+{
+	std::string tempString;
+	cout << "what are you trying to use?" << endl << endl;
+	cin >> tempString;
+
 }
 
 
@@ -86,6 +94,12 @@ void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, Location
 
 	case 4:
 		LookAtObject(InputNavigator);
+
+		break;
+
+	case 5:
+
+
 
 		break;
 

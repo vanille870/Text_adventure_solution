@@ -2,23 +2,34 @@
 #include <iostream>
 #include <map>
 
+class Exit;
+
+
 
 class WorldObject
 {
 public:
 	std::string ObjectName;
 	std::string LookMessage;
- 
+	void(*UseFunction)(Exit, bool);
 
-	WorldObject(std::string InputObjectName, std::string InputLookMessage)
+ 
+	void DefaultFunction()
+	{
+		std::cout << "function not set" << std::endl;
+	}
+
+	WorldObject(std::string InputObjectName, std::string InputLookMessage) 
 	{
 		ObjectName = InputObjectName;  
 		LookMessage = InputLookMessage; 
+
+		UseFunction = NULL; 
 	}
 
 	WorldObject()
 	{
-
+		UseFunction = NULL; 
 	}
 
 };

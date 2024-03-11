@@ -3,6 +3,12 @@
 #include "Travel_Declarations.h"
 #include "Action_Declarations.h"
 #include "Locations_Declarations.h"
+#include "ObjectFunctionsDeca.h"
+
+void test(Exit exit, bool lbool)
+{
+
+}
 
 void CreateMapOfLocations(LocationMap* InputLocationMap) 
 {
@@ -17,6 +23,10 @@ void CreateMapOfLocations(LocationMap* InputLocationMap)
 
     InputLocationMap->AddObjectToLocation("forest", "Rock", "a nice smooth rock");
     InputLocationMap->AddObjectToLocation("forest", "Well", "you peer down the well and see only the void");
+
+    forest.ObjectMap["rock"].UseFunction = ChangExitAcces; 
+
+    //forest.ObjectMap["rock"].UseFunction(forest.ExitMap['n'], true);
 
 
     Location cave(1, "cave", "this is a cave");

@@ -3,7 +3,9 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <random>
 #include <WorldObjects_Declarations.h>
+#include <RandomNumber_Deca.h>
 
 
 class Exit
@@ -66,16 +68,88 @@ public:
 	}
 
 
-	std::string FindObjectInLocation(std::string InputObjectName)
+	std::string FindObjectInLocation(std::string InputObjectName, bool InputGiveObjctName)
 	{
 		auto it = this->ObjectMap.find(InputObjectName);
 
 		if (it == ObjectMap.end())
 		{
-			return "There's no such object here dummy";
+			int RandomNumber = MakeRandomNumber(1, 4);
+
+			switch (RandomNumber)
+			{
+				
+			case 1:
+				return "There's no such object here dummy";
+				break;
+
+			case 2:
+				return "Object not found";
+				break;
+
+			case 3:
+				return "No such object";
+				break;
+
+			case 4:
+				return "Can't find object";
+				break;
+			}
 		}
 
-		return (it->second).LookMessage; 
+		if (InputGiveObjctName == true)
+		{
+			return (it->second).ObjectName;
+		}
+
+		else
+		{
+			return (it->second).LookMessage;
+		}
+
+
+	}
+
+	std::string FindAndRturn(std::string InputObjectName, bool InputGiveObjctName)
+	{
+		auto it = this->ObjectMap.find(InputObjectName);
+
+		if (it == ObjectMap.end())
+		{
+			int RandomNumber = MakeRandomNumber(1, 4);
+
+			switch (RandomNumber)
+			{
+
+			case 1:
+				return "There's no such object here dummy";
+				break;
+
+			case 2:
+				return "Object not found";
+				break;
+
+			case 3:
+				return "No such object";
+				break;
+
+			case 4:
+				return "Can't find object";
+				break;
+			}
+		}
+
+		if (InputGiveObjctName == true)
+		{
+			return (it->second).ObjectName;
+		}
+
+		else
+		{
+			return (it->second).LookMessage;
+		}
+
+
 	}
 };
 
@@ -151,5 +225,7 @@ public:
 };
 
 void CreateMapOfLocations(LocationMap* InputLocationMap);
+
+void test(Exit exit, bool lbool);
 
 
