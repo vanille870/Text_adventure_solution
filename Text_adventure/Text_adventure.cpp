@@ -26,11 +26,11 @@ ActionMap* InitActionMap()
     return actionMapP; 
 }
 
-Navigator* InitNavigator(Location inputLocation)
+Navigator* InitNavigator(Location* inputLocation)
 {
     Navigator* NavigatorP = new Navigator();
 
-    NavigatorP->CurrentLocation = inputLocation;
+    NavigatorP->CurrentLocation = *inputLocation;
 
     return NavigatorP;
 }
@@ -51,6 +51,8 @@ int main()
     LocationMap* locationMapP = InitLocationMap();
     Navigator* NavigatorP = InitNavigator(locationMapP->LocationMap["forest"]);
     WorldObjectManager* WorldObjectManagerP = InitManager();
+
+
 
     EnterAction(actionMapP, NavigatorP, locationMapP);
 

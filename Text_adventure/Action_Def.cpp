@@ -6,16 +6,32 @@
 #include "Action_Declarations.h"
 #include "Travel_Declarations.h"
 #include "Locations_Declarations.h"
+#include "WorldObjects_Declarations.h"
 
 using namespace std;
 
 void CreateMapOfActions(ActionMap* InputActionMapP)
 {
 	InputActionMapP->LoadActionToMap(1, "TRAVEL");
+	InputActionMapP->LoadActionToMap(1, "T");
+	InputActionMapP->LoadActionToMap(1, "MOVE");
+
 	InputActionMapP->LoadActionToMap(2, "HELP");
+	InputActionMapP->LoadActionToMap(2, "CONTROLS");
+
 	InputActionMapP->LoadActionToMap(3, "LOOKAROUND");
+	InputActionMapP->LoadActionToMap(3, "LA");
+	InputActionMapP->LoadActionToMap(3, "LOCATION");
+
 	InputActionMapP->LoadActionToMap(4, "LOOKOBJECT");
+	InputActionMapP->LoadActionToMap(4, "LOOKATOBJECT");
+	InputActionMapP->LoadActionToMap(4, "LO");
+
 	InputActionMapP->LoadActionToMap(5, "USEOBJECT");
+	InputActionMapP->LoadActionToMap(5, "UO");
+
+	InputActionMapP->LoadActionToMap(6, "OBJECTS");
+	InputActionMapP->LoadActionToMap(6, "LOCATIONOBJECTS");
 
 
 	//Invalid action = 0
@@ -36,9 +52,31 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 
 void DisplayHelp()
 {
-	cout << "List of actions you can do, actions are not case sensitive" << endl
+	cout << "List of actions you can do, actions are not case sensitive and you can use abbreviations and some synonyms" << endl << endl
 
-		 << "-Travel- to move to another area" << endl << endl;
+		 << "-Help- (H)" << endl << "Displays this" << endl << endl
+
+	     << "-Travel- (T)" << endl << "Move to another area" << endl << endl
+
+		 << "-ObjectList- (OL)" << endl <<"Prints a list of objects in the current location" << endl << endl
+
+	     << "-LookAround- (LA)" << endl << "Take a look around your current location" << endl << endl
+
+	     << "-UseObject- (UO)" << endl << "Attempt to use an object" << endl << endl
+
+	     << "-LookObject- (LO)" << endl << "Look at an object" << endl << endl;
+}
+
+void DisplayObjectsInLocation(Navigator* InputNavigator)
+{
+	Location tempLoc = InputNavigator->CurrentLocation;
+	std::map<std::string, WorldObject*> tempMap = tempLoc.ObjectMap;
+	std::map<std::string, WorldObject*>::iterator it = tempMap.begin();
+
+	for (it; it != tempMap.end(); ++it)
+	{
+		std::cout << it->second->ObjectName << endl;
+	}
 }
 
 void DisplayLocationDescription(Navigator* InputNavigator)
@@ -54,15 +92,44 @@ void LookAtObject( Navigator* InputNavigator)
 
 	cout << "what are you looking at?" << endl << endl;
 	cin >> tempString;
-	cout << "object: " << InputNavigator->CurrentLocation.FindObjectInLocation(tempString, false) << endl;
+
+	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
+
+	cout << InputNavigator->CurrentLocation.FindObjectInLocation(tempString)->LookMessage << endl;
 }
 
 void UseObject(Navigator* InputNavigator)
 {
 	std::string tempString;
+	WorldObject* tempObjectP;
+	Exit* tempExitP; 
+
 	cout << "what are you trying to use?" << endl << endl;
 	cin >> tempString;
 
+	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
+
+	tempObjectP = InputNavigator->CurrentLocation.FindObjectInLocation(tempString);
+	tempExitP = InputNavigator->CurrentLocation.ExitMap[tempObjectP->AffectedExitDirection];
+
+	if (tempObjectP->IsDefault == false)
+	{
+		tempObjectP->ExitChangeFunction(tempExitP);
+
+	}
+
+
+
+
+
+
+	//cout << InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection]->BlockedMessage;
+
+	//tempObject->ExitChangeFunction(tempExit);
+
+	//tempExit = InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection];
+
+	//tempObject->UseFunction(InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection], tempObject->OpenExit);
 }
 
 
@@ -79,17 +146,17 @@ void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, Location
 	case 1:
 		cout << "moving now" << endl;
 		PickDirection(InputNavigator, InputLocationMap);
-		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
+
 		break;
 
 	case 2:
 		DisplayHelp();
-		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
+
 		break;
 
 	case 3:
 		DisplayLocationDescription(InputNavigator);
-		EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
+
 		break;
 
 	case 4:
@@ -98,9 +165,11 @@ void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, Location
 		break;
 
 	case 5:
+		UseObject(InputNavigator);
+		break;
 
-
-
+	case 6:
+		DisplayObjectsInLocation(InputNavigator);
 		break;
 
 	default:

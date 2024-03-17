@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Action_Def.cpp" />
+    <ClCompile Include="Exits_Def.cpp" />
     <ClCompile Include="Locations_Definitions.cpp" />
     <ClCompile Include="ObjectFunctions_Def.cpp" />
     <ClCompile Include="RandomNumbers_Def.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action_Declarations.h" />
+    <ClInclude Include="Exits_Deca.h" />
     <ClInclude Include="Locations_Declarations.h" />
     <ClInclude Include="ObjectFunctionsDeca.h" />
     <ClInclude Include="RandomNumber_Deca.h" />

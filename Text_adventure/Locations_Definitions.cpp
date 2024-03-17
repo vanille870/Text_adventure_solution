@@ -5,38 +5,30 @@
 #include "Locations_Declarations.h"
 #include "ObjectFunctionsDeca.h"
 
-void test(Exit exit, bool lbool)
-{
-
-}
-
 void CreateMapOfLocations(LocationMap* InputLocationMap) 
 {
 
-    Location forest(0, "forest", "this is a forest");
+    Location* forest = new Location(0, "forest", "this is a forest");
     InputLocationMap->LoadLocationToMap(forest); 
-    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by falling tree", 'N');
+    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by fallen tree", 'N'); 
     InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by squirel", 'E'); 
-    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by mr monopoly", 'S');
+    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by mr monopoly", 'S'); 
 
-    InputLocationMap->AddAlwaysOpenExitToLocation("forest", "cave", 'W');
+    InputLocationMap->AddExitToLocation("forest", "cave", "Blocked by fallen tree",'W', false); 
 
-    InputLocationMap->AddObjectToLocation("forest", "Rock", "a nice smooth rock");
-    InputLocationMap->AddObjectToLocation("forest", "Well", "you peer down the well and see only the void");
-
-    forest.ObjectMap["rock"].UseFunction = ChangExitAcces; 
-
-    //forest.ObjectMap["rock"].UseFunction(forest.ExitMap['n'], true);
+    InputLocationMap->AddNormalObject("forest", "ROCK", "a nice smooth rock", "You pick up the rock but nothing was under it"); 
+    InputLocationMap->AddExitChangingObject("forest", "TREELOG", "A log blocks the path", "You push the log out of the way", "You already pushed the log out of the way", true, 'W');
 
 
-    Location cave(1, "cave", "this is a cave");
-    InputLocationMap->LoadLocationToMap(cave);
+    Location* cave = new Location(1, "cave", "this is a cave");
+    InputLocationMap->LoadLocationToMap(cave); 
     
     InputLocationMap->AddAlwaysOpenExitToLocation("cave", "forest", 'N');
-    InputLocationMap->AddAlwaysClosedExitToLocation("cave", "blocked by squirel", 'E');
-    InputLocationMap->AddAlwaysClosedExitToLocation("cave", "blocked by mr monopoly", 'S');
+    InputLocationMap->AddAlwaysClosedExitToLocation("cave", "Just a cave wall", 'E');
+    InputLocationMap->AddAlwaysClosedExitToLocation("cave", "Just a wett cave wall", 'S');
     InputLocationMap->AddAlwaysClosedExitToLocation("cave", "end of cave", 'W');
 
-    InputLocationMap->AddObjectToLocation("cave", "Crystal", "final fantasy reference");
-    InputLocationMap->AddObjectToLocation("cave", "rock", "A rock that rocks, a solid find");
+    InputLocationMap->AddNormalObject("cave", "CRYSTAL", "A nice looking crystal", "The crystal is lodged firmly in the wall");
+    InputLocationMap->AddNormalObject("cave", "ROCK", "A rock that rocks, a solid find", "You pick up the rock");
+
 }

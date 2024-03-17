@@ -36,6 +36,9 @@
     <ClCompile Include="ObjectFunctions_Def.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Exits_Def.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action_Declarations.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFunctionsDeca.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Exits_Deca.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
