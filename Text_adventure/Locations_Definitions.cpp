@@ -10,14 +10,16 @@ void CreateMapOfLocations(LocationMap* InputLocationMap)
 
     Location* forest = new Location(0, "forest", "this is a forest");
     InputLocationMap->LoadLocationToMap(forest); 
-    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by fallen tree", 'N'); 
-    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by squirel", 'E'); 
-    InputLocationMap->AddAlwaysClosedExitToLocation("forest", "blocked by mr monopoly", 'S'); 
 
-    InputLocationMap->AddExitToLocation("forest", "cave", "Blocked by fallen tree",'W', false); 
+    forest->AddAlwaysClosedExit("blocked by fallen tree", 'N');
+    forest->AddAlwaysClosedExit("blocked by squirel", 'E');
+    forest->AddAlwaysClosedExit("blocked by mr monopoly", 'S');
 
-    InputLocationMap->AddNormalObject("forest", "ROCK", "a nice smooth rock", "You pick up the rock but nothing was under it"); 
+    forest->AddExit("cave", "Blocked by fallen tree", 'W', false);
+
+    forest->AddNormalObject("ROCK", "a nice smooth rock", "You pick up the rock but nothing was under it");
     InputLocationMap->AddExitChangingObject("forest", "TREELOG", "A log blocks the path", "You push the log out of the way", "You already pushed the log out of the way", true, 'W');
+    forest->AddInventoryObject("BRANCH", "The branch looks pretty sturdy");
 
 
     Location* cave = new Location(1, "cave", "this is a cave");

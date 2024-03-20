@@ -131,6 +131,8 @@
   <ItemGroup>
     <ClCompile Include="Action_Def.cpp" />
     <ClCompile Include="Exits_Def.cpp" />
+    <ClCompile Include="Inventory.Def.cpp" />
+    <ClCompile Include="InventoryItems_Def.cpp" />
     <ClCompile Include="Locations_Definitions.cpp" />
     <ClCompile Include="ObjectFunctions_Def.cpp" />
     <ClCompile Include="RandomNumbers_Def.cpp" />
@@ -141,6 +143,8 @@
   <ItemGroup>
     <ClInclude Include="Action_Declarations.h" />
     <ClInclude Include="Exits_Deca.h" />
+    <ClInclude Include="InventoryItems_Deca.h" />
+    <ClInclude Include="Inventory_Deca.h" />
     <ClInclude Include="Locations_Declarations.h" />
     <ClInclude Include="ObjectFunctionsDeca.h" />
     <ClInclude Include="RandomNumber_Deca.h" />

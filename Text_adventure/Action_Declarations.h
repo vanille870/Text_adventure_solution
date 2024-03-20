@@ -4,6 +4,7 @@
 #include <map>
 #include <utility>
 #include "Locations_Declarations.h"
+#include "Inventory_Deca.h"
 
 
 
@@ -22,7 +23,7 @@ void CreateMapOfActions(ActionMap*);
 
 int ReturnActionID(std::string);
 
-void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap);
+void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap, Inventory* InputInvntory);
 
 void DisplayHelp();
 

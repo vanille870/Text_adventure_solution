@@ -2,50 +2,38 @@
 #include <iostream>
 #include <map>
 #include "Exits_Deca.h"
+#include "InventoryItems_Deca.h"
+#include "Inventory_Deca.h"
 
 class WorldObject
 {
 public:
-	std::string ObjectName;
+	std::string Name;
 	std::string LookMessage;
 	std::string UseMessage;
+	std::string ObjectType;
 	char AffectedExitDirection;
 	bool IsDefault;
-
-	WorldObject(std::string InputObjectName, std::string InputLookMessage, std::string InputUseMssage, char InputAffectedExit)
-	{
-		ObjectName = InputObjectName;
-		LookMessage = InputLookMessage;
-		UseMessage = InputUseMssage;
-		AffectedExitDirection = 'x';
-		IsDefault = false;
-	}
-
-	WorldObject(std::string InputObjectName, std::string InputLookMessage, std::string InputUseMssage) 
-	{
-		ObjectName = InputObjectName;  
-		LookMessage = InputLookMessage; 
-		UseMessage = InputUseMssage;
-		AffectedExitDirection = 'x';
-		IsDefault = false;
-	}
 
 	WorldObject()
 	{
 		AffectedExitDirection = 'x';
-		ObjectName = "N/A";
+		Name = "N/A";
 		LookMessage = "N/A";
 		UseMessage = "N/A";
 		IsDefault = false;
+		ObjectType = "Normal";
 	}
 
 	virtual void ExitChangeFunction(Exit* InputExit)
 	{
 		std::cout << UseMessage << std::endl; 
-
     }
 
-
+	virtual void PickUpObject(Inventory* InputInventory)
+	{
+		std::cout << "Can't Pick this up" << std::endl;
+	}
 };
 
 class ExitChangingObject : public WorldObject
@@ -55,7 +43,7 @@ public:
 	bool OpenExit;
 	bool Triggered;
 
-	void ExitChangeFunction(Exit* InputExit) override   
+	void ExitChangeFunction(Exit* InputExit) override
 	{
 		if (Triggered == false)
 		{
@@ -74,6 +62,18 @@ public:
 	
 	}
 
+	ExitChangingObject* MakeNormalExitChangeObject(std::string InputName, std::string InputLookMessage, std::string InputUseMssage, char AffectedExit)
+	{
+		Name = InputName;
+		LookMessage = InputLookMessage;
+		UseMessage = InputUseMssage;
+		AffectedExitDirection = AffectedExit;
+		IsDefault = false;
+		ObjectType = "Exit";
+
+		return this;
+	}
+
 	ExitChangingObject() 
 	{
 		AffectedExitDirection = 'x';
@@ -89,15 +89,53 @@ public:
 	}
 };
 
+class InventoryObject : public WorldObject
+{
+public:
+	InventoryItem invItem;
+	std::string PickUpmessage;
+
+
+	void PickUpObject(Inventory* InputInventory) override
+	{
+		char YN;
+		bool IsInputting = true;
+
+		while (IsInputting == true)
+		{
+			std::cout << PickUpmessage << std::endl
+				<< "Would you like to pick this up? (y/n)" << std::endl;
+			std::cin >> YN;
+
+			if (YN == 'Y' || YN == 'y')
+			{
+				IsInputting = false;
+			}
+
+			if (YN == 'N' || YN == 'n')
+			{
+				IsInputting = false;
+			}
+
+			else
+			{
+				std::cout << "Input Y or N" << std::endl;
+			}
+		}
+	}
+};
+
 class WorldObjectManager
 {
 public:
-	std::map<std::string, WorldObject> ObjectMap; 
+	std::map<std::string, WorldObject> Map; 
 
 	void LoadObjectToMap(WorldObject InputObject) 
 	{
-		this->ObjectMap[InputObject.ObjectName] = InputObject;
+		this->Map[InputObject.Name] = InputObject;
 	}
 };
+
+
 
 void CreateMapOfObjects(WorldObjectManager*);

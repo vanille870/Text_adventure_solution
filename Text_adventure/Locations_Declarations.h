@@ -15,8 +15,8 @@ public:
 	int LocationID;
 	std::string LocationName;
 	std::string LocationDescription;
-	std::map <char, Exit*> ExitMap;
-	std::map <std::string, WorldObject*> ObjectMap;
+	std::map <char, Exit*> ExitMap; 
+	std::map <std::string, WorldObject*> Map;
 	WorldObject DefaultWorldObject;
 	//std::pair <int, std::string>
 
@@ -28,7 +28,7 @@ public:
 		LocationID = InputID;
 
 		DefaultWorldObject.LookMessage = ""; 
-		DefaultWorldObject.ObjectName = "Default";
+		DefaultWorldObject.Name = "Default";
 		DefaultWorldObject.IsDefault = true;
 
 		Exit* exit1 = new Exit();  
@@ -50,11 +50,11 @@ public:
 	}
 
 
-	WorldObject* FindObjectInLocation(std::string InputObjectName) 
+	WorldObject* FindObjectInLocation(std::string InputName) 
 	{
-		auto it = this->ObjectMap.find(InputObjectName);
+		auto it = this->Map.find(InputName);
 
-		if (it == ObjectMap.end())
+		if (it == Map.end())
 		{
 			int RandomNumber = MakeRandomNumber(1, 4);
 
@@ -83,7 +83,80 @@ public:
 		}
 
 		return (it->second);
-	
+	}
+
+	void AddInventoryObject(std::string InputName, std::string InputLookMessage)
+	{
+		InventoryObject* NewInventoryObject = new InventoryObject();
+
+		NewInventoryObject->Name = InputName;
+		NewInventoryObject->LookMessage = InputLookMessage;
+
+		this->Map[InputName] = NewInventoryObject; 
+	}
+
+	void AddNormalObject(std::string InputName, std::string InputLookMessage, std::string InputUseMessage)
+	{
+		WorldObject* NewWorldObject = new WorldObject();
+
+		NewWorldObject->Name = InputName;
+		NewWorldObject->LookMessage = InputLookMessage;
+		NewWorldObject->UseMessage = InputUseMessage; 
+		NewWorldObject->AffectedExitDirection = 'x';  
+		NewWorldObject->IsDefault = false; 
+		NewWorldObject->ObjectType = "Normal";
+
+		Map[InputName] = NewWorldObject;
+	}
+
+	void AddedExitObject(std::string InputName, std::string InputLookMessage, std::string InputUseMessage, std::string InputSecondUseMessage, bool InputExitOpen, char InputAffctedExitDirection)
+	{
+		ExitChangingObject* NewExitObject = new ExitChangingObject();
+		 
+		NewExitObject->Name = InputName; 
+		NewExitObject->LookMessage = InputLookMessage;
+		NewExitObject->UseMessage = InputUseMessage;
+		NewExitObject->AfterUseMessage = InputSecondUseMessage;
+		NewExitObject->AffectedExitDirection = InputAffctedExitDirection;
+		NewExitObject->IsDefault = false; 
+		NewExitObject->ObjectType = "Exit"; 
+
+	}
+
+	void AddExit(std::string InputExitLocation, std::string InputBlockedMessage, char InputExitDirection, bool InputExitOpen)
+	{
+		Exit* NewExit = new Exit();
+
+		NewExit->ExitDirection = InputExitDirection;
+		NewExit->BlockedMessage = InputBlockedMessage;
+		NewExit->ExitLocation = InputExitLocation;
+		NewExit->Open = InputExitOpen;
+
+		ExitMap[InputExitDirection] = NewExit;
+	}
+
+	void AddAlwaysClosedExit(std::string InputBlockedMessage, char InputExitDirection)
+	{
+		Exit* NewExit = new Exit();
+
+		NewExit->ExitDirection = InputExitDirection;
+		NewExit->BlockedMessage = InputBlockedMessage;
+		NewExit->Open = false;
+		NewExit->ExitLocation = "None, error if shown";
+
+		ExitMap[InputExitDirection] = NewExit; 
+	}
+
+	void AddAlwaysOpenExit(std::string InputBlockedMessage, std::string InputExitLocation, char InputExitDirection)
+	{
+		Exit* NewExit = new Exit();
+
+		NewExit->ExitDirection = InputExitDirection;
+		NewExit->BlockedMessage = InputBlockedMessage;
+		NewExit->Open = true; 
+		NewExit->ExitLocation = InputExitLocation;
+
+		ExitMap[InputExitDirection] = NewExit;
 	}
 };
 
@@ -129,43 +202,44 @@ public:
 				 this->LocationMap[LocationName].ExitMap[InputExitDirction].ExitLocation = InputExitLocation;*/
 			 }
 
-			 void AddNormalObject(std::string LocationName, std::string InputObjectName, std::string InputObjectLookMessage, std::string InputUseMessage, char InputExitDir)
+			 void AddNormalObject(std::string LocationName, std::string InputName, std::string InputObjectLookMessage, std::string InputUseMessage, char InputExitDir)
 			 {
 				 WorldObject* worldObject = new WorldObject();  
 
-				 worldObject->ObjectName = InputObjectName;
+				 worldObject->Name = InputName;
 				 worldObject->LookMessage = InputObjectLookMessage;
 				 worldObject->UseMessage = InputUseMessage; 
 				 worldObject->AffectedExitDirection = InputExitDir;
 
 
-				 this->LocationMap[LocationName]->ObjectMap[InputObjectName] = worldObject;
+				 this->LocationMap[LocationName]->Map[InputName] = worldObject;
 			 }
 
-			 void AddNormalObject(std::string LocationName, std::string InputObjectName, std::string InputObjectLookMessage, std::string InputUseMessage)
+			 void AddNormalObject(std::string LocationName, std::string InputName, std::string InputObjectLookMessage, std::string InputUseMessage)
 			 {
 				 WorldObject* worldObject = new WorldObject();
 
-				 worldObject->ObjectName = InputObjectName; 
+				 worldObject->Name = InputName; 
 				 worldObject->LookMessage = InputObjectLookMessage;
 				 worldObject->UseMessage = InputUseMessage;
 				 worldObject->AffectedExitDirection = 'x';
 
 
-				 this->LocationMap[LocationName]->ObjectMap[InputObjectName] = worldObject;
+				 this->LocationMap[LocationName]->Map[InputName] = worldObject;
 			 }
 
-			 void AddExitChangingObject(std::string LocationName, std::string InputObjectName, std::string InputObjectLookMessage, std::string InputObjectUseMessage, std::string InputUSedMessage, bool InputExitOpen, char InputAffctedExitDirection)
+
+			 void AddExitChangingObject(std::string LocationName, std::string InputName, std::string InputObjectLookMessage, std::string InputObjectUseMessage, std::string InputUSedMessage, bool InputExitOpen, char InputAffctedExitDirection)
 			 {
 				 ExitChangingObject* exitChangingObject = new ExitChangingObject(); 
 
-				 exitChangingObject->ObjectName = InputObjectName;
+				 exitChangingObject->Name = InputName;
 				 exitChangingObject->LookMessage = InputObjectLookMessage;
 				 exitChangingObject->UseMessage = InputObjectUseMessage;
 				 exitChangingObject->OpenExit = InputExitOpen;
 				 exitChangingObject->AffectedExitDirection = InputAffctedExitDirection;
 
-				 this->LocationMap[LocationName]->ObjectMap[InputObjectName] = exitChangingObject; 
+				 this->LocationMap[LocationName]->Map[InputName] = exitChangingObject; 
 			 }
 };
 

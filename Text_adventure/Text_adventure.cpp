@@ -5,8 +5,15 @@
 #include "Travel_Declarations.h"
 #include "Locations_Declarations.h"
 #include "WorldObjects_Declarations.h"
+#include "Inventory_Deca.h"
 
 
+Inventory* InitInventory()
+{
+    Inventory* PLayerInventoryP = InitializeInventory();
+
+    return PLayerInventoryP;
+}
 
 LocationMap* InitLocationMap()
 {
@@ -51,10 +58,13 @@ int main()
     LocationMap* locationMapP = InitLocationMap();
     Navigator* NavigatorP = InitNavigator(locationMapP->LocationMap["forest"]);
     WorldObjectManager* WorldObjectManagerP = InitManager();
+    Inventory* PlayerInventoryP = InitInventory();
+
+    PlayerInventoryP->DeleteItemFromInventory();
 
 
 
-    EnterAction(actionMapP, NavigatorP, locationMapP);
+    EnterAction(actionMapP, NavigatorP, locationMapP, PlayerInventoryP);
 
     return 0;
 }

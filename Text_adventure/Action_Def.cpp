@@ -7,8 +7,23 @@
 #include "Travel_Declarations.h"
 #include "Locations_Declarations.h"
 #include "WorldObjects_Declarations.h"
+#include "Inventory_Deca.h"
 
 using namespace std;
+
+template <typename T>
+void PrintList (T ObjectType)
+{
+	auto tempObject = ObjectType; 
+	auto tempMap = ObjectType->Map;
+	auto it = tempMap.begin(); 
+
+	for (it; it != tempMap.end(); ++it) 
+	{
+		std::cout << it->second->Name << endl; 
+	}
+};
+
 
 void CreateMapOfActions(ActionMap* InputActionMapP)
 {
@@ -32,22 +47,11 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 
 	InputActionMapP->LoadActionToMap(6, "OBJECTS");
 	InputActionMapP->LoadActionToMap(6, "LOCATIONOBJECTS");
+	InputActionMapP->LoadActionToMap(6, "OBJECTLIST");
+	InputActionMapP->LoadActionToMap(6, "OL");
 
-
-	//Invalid action = 0
-	//move to another area = 1
-
-	/*ActionMapClass::ActionMap["TRAVEL"] = 1;
-	ActionMapClass::ActionMap["GOTO"] = 1;
-	ActionMapClass::ActionMap["MOVETO"] = 1;
-	ActionMapClass::ActionMap["WALK"] = 1;
-	ActionMapClass::ActionMap["PROCEED"] = 1;
-	ActionMapClass::ActionMap["MOVE"] = 1;
-
-	ActionMapClass::ActionMap["HELP"] = 2;
-
-	ActionMapClass::ActionMap["LOOK"] = 3;
-	ActionMapClass::ActionMap["LOOKAROUND"] = 3;*/
+	InputActionMapP->LoadActionToMap(7, "INVENTORY");
+	InputActionMapP->LoadActionToMap(7, "INV");
 }
 
 void DisplayHelp()
@@ -65,18 +69,6 @@ void DisplayHelp()
 	     << "-UseObject- (UO)" << endl << "Attempt to use an object" << endl << endl
 
 	     << "-LookObject- (LO)" << endl << "Look at an object" << endl << endl;
-}
-
-void DisplayObjectsInLocation(Navigator* InputNavigator)
-{
-	Location tempLoc = InputNavigator->CurrentLocation;
-	std::map<std::string, WorldObject*> tempMap = tempLoc.ObjectMap;
-	std::map<std::string, WorldObject*>::iterator it = tempMap.begin();
-
-	for (it; it != tempMap.end(); ++it)
-	{
-		std::cout << it->second->ObjectName << endl;
-	}
 }
 
 void DisplayLocationDescription(Navigator* InputNavigator)
@@ -118,11 +110,6 @@ void UseObject(Navigator* InputNavigator)
 
 	}
 
-
-
-
-
-
 	//cout << InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection]->BlockedMessage;
 
 	//tempObject->ExitChangeFunction(tempExit);
@@ -133,52 +120,59 @@ void UseObject(Navigator* InputNavigator)
 }
 
 
-void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap)
+
+void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, LocationMap* InputLocationMap, Inventory* InputPlayerInventory)
 {
+	bool GameRunning = true;
 	string Action;
 
-	std::cout << "What do you want to do?" << endl;
-	cin >> Action;
-	transform(Action.begin(), Action.end(), Action.begin(), toupper);
-
-	switch (InputActionMapP->Map[Action])
+	while (GameRunning == true)
 	{
-	case 1:
-		cout << "moving now" << endl;
-		PickDirection(InputNavigator, InputLocationMap);
+		std::cout << "What do you want to do?" << endl;
+		cin >> Action;
+		transform(Action.begin(), Action.end(), Action.begin(), toupper);
 
-		break;
+		switch (InputActionMapP->Map[Action])
+		{
+		case 1:
+			cout << "moving now" << endl;
+			PickDirection(InputNavigator, InputLocationMap);
 
-	case 2:
-		DisplayHelp();
+			break;
 
-		break;
+		case 2:
+			DisplayHelp();
 
-	case 3:
-		DisplayLocationDescription(InputNavigator);
+			break;
 
-		break;
+		case 3:
+			DisplayLocationDescription(InputNavigator);
 
-	case 4:
-		LookAtObject(InputNavigator);
+			break;
 
-		break;
+		case 4:
+			LookAtObject(InputNavigator);
 
-	case 5:
-		UseObject(InputNavigator);
-		break;
+			break;
 
-	case 6:
-		DisplayObjectsInLocation(InputNavigator);
-		break;
+		case 5:
+			UseObject(InputNavigator);
+			break;
 
-	default:
-		cout << "Not a valid action, enter again" << endl << endl;
-		//EnterAction(InputActionMapP);
+		case 6:
+			PrintList(&InputNavigator->CurrentLocation); 
+			break;
 
+		case 7:
+			PrintList(InputPlayerInventory);
+			break;
+
+		default:
+			cout << "Not a valid action, enter again" << endl << endl;
+			//EnterAction(InputActionMapP);
+
+		}
 	}
-
-	EnterAction(InputActionMapP, InputNavigator, InputLocationMap);
 }
 
 
