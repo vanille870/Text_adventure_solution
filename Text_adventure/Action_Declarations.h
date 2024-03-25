@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <functional>
 #include "Locations_Declarations.h"
 #include "Inventory_Deca.h"
 

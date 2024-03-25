@@ -8,9 +8,9 @@ Inventory* InitializeInventory()
 {
 	Inventory* PlayerInventoryP = new Inventory(5); 
 
-	PlayerInventoryP->AdditemToInventory("key");
-	PlayerInventoryP->AdditemToInventory("hatchet");
-	PlayerInventoryP->AdditemToInventory("sword");
+	PlayerInventoryP->AdditemToInventory("key", "A shiny key");
+	PlayerInventoryP->AdditemToInventory("hatchet", "A worn hatchet");
+	PlayerInventoryP->AdditemToInventory("sword", "A rusty sword");
 
 	return PlayerInventoryP;
 }

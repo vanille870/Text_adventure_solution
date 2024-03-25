@@ -60,10 +60,6 @@ int main()
     WorldObjectManager* WorldObjectManagerP = InitManager();
     Inventory* PlayerInventoryP = InitInventory();
 
-    PlayerInventoryP->DeleteItemFromInventory();
-
-
-
     EnterAction(actionMapP, NavigatorP, locationMapP, PlayerInventoryP);
 
     return 0;

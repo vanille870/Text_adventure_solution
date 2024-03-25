@@ -29,6 +29,7 @@ public:
 
 		DefaultWorldObject.LookMessage = ""; 
 		DefaultWorldObject.Name = "Default";
+		DefaultWorldObject.ObjectType = "Default";
 		DefaultWorldObject.IsDefault = true;
 
 		Exit* exit1 = new Exit();  
@@ -91,6 +92,7 @@ public:
 
 		NewInventoryObject->Name = InputName;
 		NewInventoryObject->LookMessage = InputLookMessage;
+		NewInventoryObject->ObjectType = "Item";
 
 		this->Map[InputName] = NewInventoryObject; 
 	}
@@ -118,9 +120,10 @@ public:
 		NewExitObject->UseMessage = InputUseMessage;
 		NewExitObject->AfterUseMessage = InputSecondUseMessage;
 		NewExitObject->AffectedExitDirection = InputAffctedExitDirection;
-		NewExitObject->IsDefault = false; 
+		NewExitObject->OpenExit = InputExitOpen;
 		NewExitObject->ObjectType = "Exit"; 
 
+		Map[InputName] = NewExitObject; 
 	}
 
 	void AddExit(std::string InputExitLocation, std::string InputBlockedMessage, char InputExitDirection, bool InputExitOpen)

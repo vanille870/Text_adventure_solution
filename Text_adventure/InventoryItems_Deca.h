@@ -8,5 +8,6 @@ class InventoryItem
 {
 public:
 	std::string Name;
+	std::string CheckMessage;
 }; 
 

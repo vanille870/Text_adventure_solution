@@ -110,9 +110,12 @@ public:
 			if (YN == 'Y' || YN == 'y')
 			{
 				IsInputting = false;
+				InputInventory->AdditemToInventory(Name, LookMessage);
+
+				std::cout << "you pick the " << Name << " up" << std::endl; 
 			}
 
-			if (YN == 'N' || YN == 'n')
+			else if (YN == 'N' || YN == 'n')
 			{
 				IsInputting = false;
 			}

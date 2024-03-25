@@ -18,9 +18,9 @@ void PrintList (T ObjectType)
 	auto tempMap = ObjectType->Map;
 	auto it = tempMap.begin(); 
 
-	for (it; it != tempMap.end(); ++it) 
+	for (const auto& it : tempMap)
 	{
-		std::cout << it->second->Name << endl; 
+		std::cout << it.second->Name << endl; 
 	}
 };
 
@@ -52,6 +52,14 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 
 	InputActionMapP->LoadActionToMap(7, "INVENTORY");
 	InputActionMapP->LoadActionToMap(7, "INV");
+
+	InputActionMapP->LoadActionToMap(8, "DROP");
+	InputActionMapP->LoadActionToMap(8, "DROPITEM");
+	InputActionMapP->LoadActionToMap(8, "DI");
+
+	InputActionMapP->LoadActionToMap(9, "CHECKITEM");
+	InputActionMapP->LoadActionToMap(9, "CI");
+	InputActionMapP->LoadActionToMap(9, "CHECKINVENTORY");
 }
 
 void DisplayHelp()
@@ -78,7 +86,7 @@ void DisplayLocationDescription(Navigator* InputNavigator)
 	cout << InputNavigator->CurrentLocation.LocationDescription << endl << endl;
 }
 
-void LookAtObject( Navigator* InputNavigator)
+void LookAtObject(Navigator* InputNavigator)
 {
 	std::string tempString;
 
@@ -90,11 +98,10 @@ void LookAtObject( Navigator* InputNavigator)
 	cout << InputNavigator->CurrentLocation.FindObjectInLocation(tempString)->LookMessage << endl;
 }
 
-void UseObject(Navigator* InputNavigator)
+void UseObject(Navigator* InputNavigator, Inventory* InputInventory)
 {
-	std::string tempString;
+	std::string tempString; 
 	WorldObject* tempObjectP;
-	Exit* tempExitP; 
 
 	cout << "what are you trying to use?" << endl << endl;
 	cin >> tempString;
@@ -102,13 +109,22 @@ void UseObject(Navigator* InputNavigator)
 	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
 
 	tempObjectP = InputNavigator->CurrentLocation.FindObjectInLocation(tempString);
-	tempExitP = InputNavigator->CurrentLocation.ExitMap[tempObjectP->AffectedExitDirection];
 
-	if (tempObjectP->IsDefault == false)
+	if (tempObjectP->ObjectType != "Default")
 	{
-		tempObjectP->ExitChangeFunction(tempExitP);
+		if (tempObjectP->ObjectType == "Exit")
+		{ 
+			Exit* tempExitP;  
+			tempExitP = InputNavigator->CurrentLocation.ExitMap[tempObjectP->AffectedExitDirection];  
+			tempObjectP->ExitChangeFunction(tempExitP);  
+		}
 
+		if (tempObjectP->ObjectType == "Item")
+		{
+			tempObjectP->PickUpObject(InputInventory);
+		}
 	}
+
 
 	//cout << InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection]->BlockedMessage;
 
@@ -117,6 +133,46 @@ void UseObject(Navigator* InputNavigator)
 	//tempExit = InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection];
 
 	//tempObject->UseFunction(InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection], tempObject->OpenExit);
+}
+
+void DropObject(Inventory* inputInvntory, Navigator* inputNavigator)
+{
+	std::string tempString;
+	InventoryItem* tempItem;
+
+	cout << "what are you dropping?" << endl << endl;
+	cin >> tempString; 
+	 
+	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
+
+	tempItem = inputInvntory->FindItemInInventory(tempString);
+
+	if (tempItem->Name == "DEFAULT")
+	{
+		//Do nothing
+	}
+
+	else
+	{
+		inputInvntory->Map.erase(tempString);
+		inputNavigator->CurrentLocation.AddInventoryObject(tempItem->Name, tempItem->CheckMessage);
+		std::cout << "You drop the " << tempString << " on the ground" << std::endl << endl;  
+	}
+}
+
+void CheckInvntoryItem(Inventory* inputInventory)
+{
+	std::string tempString;
+	InventoryItem* tempItem;
+
+	cout << "what are you checking?" << endl << endl;
+	cin >> tempString; 
+
+	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
+
+	tempItem = inputInventory->FindItemInInventory(tempString);  
+
+	cout << tempItem->CheckMessage << endl << endl; 
 }
 
 
@@ -156,15 +212,23 @@ void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, Location
 			break;
 
 		case 5:
-			UseObject(InputNavigator);
+			UseObject(InputNavigator, InputPlayerInventory);
 			break;
 
 		case 6:
-			PrintList(&InputNavigator->CurrentLocation); 
+			PrintList(&InputNavigator->CurrentLocation);  
 			break;
 
 		case 7:
 			PrintList(InputPlayerInventory);
+			break;
+
+		case 8:
+			DropObject(InputPlayerInventory, InputNavigator);
+				break;
+
+		case 9:
+			CheckInvntoryItem(InputPlayerInventory); 
 			break;
 
 		default:

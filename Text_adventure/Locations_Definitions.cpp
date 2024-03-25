@@ -18,7 +18,7 @@ void CreateMapOfLocations(LocationMap* InputLocationMap)
     forest->AddExit("cave", "Blocked by fallen tree", 'W', false);
 
     forest->AddNormalObject("ROCK", "a nice smooth rock", "You pick up the rock but nothing was under it");
-    InputLocationMap->AddExitChangingObject("forest", "TREELOG", "A log blocks the path", "You push the log out of the way", "You already pushed the log out of the way", true, 'W');
+    forest->AddedExitObject("TREELOG", "A log blocks the path", "You push the log out of the way", "You already pushed the log out of the way", true, 'W');
     forest->AddInventoryObject("BRANCH", "The branch looks pretty sturdy");
 
 
