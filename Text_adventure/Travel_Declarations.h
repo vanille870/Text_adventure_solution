@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
-#include "Locations_Declarations.h"
+
+class Navigator;
+class LocationMap;
 
 void PickDirection(Navigator* InputNavigator, LocationMap* InputLocationMap);

@@ -8,6 +8,9 @@
 #include "RandomNumber_Deca.h"
 #include "Exits_Deca.h"
 
+
+class Events;
+
 class Location
 {
 
@@ -113,7 +116,8 @@ public:
 
 	void AddedExitObject(std::string InputName, std::string InputLookMessage, std::string InputUseMessage, std::string InputSecondUseMessage, bool InputExitOpen, char InputAffctedExitDirection)
 	{
-		ExitChangingObject* NewExitObject = new ExitChangingObject();
+
+		ExitChangingObject* NewExitObject = new ExitChangingObject(); 
 		 
 		NewExitObject->Name = InputName; 
 		NewExitObject->LookMessage = InputLookMessage;
@@ -160,6 +164,17 @@ public:
 		NewExit->ExitLocation = InputExitLocation;
 
 		ExitMap[InputExitDirection] = NewExit;
+	}
+
+	WorldObject* AddObject(std::string InputObjectName)
+	{
+		WorldObject* NewWorldObject = new WorldObject();
+
+		NewWorldObject->Name = InputObjectName;
+
+		Map[InputObjectName] = NewWorldObject;
+
+		return NewWorldObject;
 	}
 };
 

@@ -1,9 +1,10 @@
 #pragma once
 #include <iostream>
 #include <map>
-#include "Exits_Deca.h"
+#include <vector>
 #include "InventoryItems_Deca.h"
 #include "Inventory_Deca.h"
+#include "Events_Deca.h"
 
 class WorldObject
 {
@@ -14,6 +15,11 @@ public:
 	std::string ObjectType;
 	char AffectedExitDirection;
 	bool IsDefault;
+	bool itemCanBeUsedOn = true;
+	int requiredSTR;
+
+	std::vector<Events*> UseEventList; 
+	std::vector<Events*> ItemEventListCut;
 
 	WorldObject()
 	{
@@ -23,6 +29,7 @@ public:
 		UseMessage = "N/A";
 		IsDefault = false;
 		ObjectType = "Normal";
+		requiredSTR = 10;
 	}
 
 	virtual void ExitChangeFunction(Exit* InputExit)
@@ -34,6 +41,59 @@ public:
 	{
 		std::cout << "Can't Pick this up" << std::endl;
 	}
+
+	void TriggerEvents(Inventory* InputInventory, std::map<std::string, WorldObject*>* InputObjctMap)
+	{
+		for (Events* ObjectEvent : UseEventList)
+		{
+			ObjectEvent->UseFunction(InputInventory, InputObjctMap);
+		}
+	}
+
+	void AddExitvent(Exit* InputExit, bool InputExitOpen, std::string InputAfterUseMessage, std::string UseMessage)
+	{
+		ChangeExitOnceE* changeExitOnceEvent = new ChangeExitOnceE();
+
+		changeExitOnceEvent->AfterUseMessage = InputAfterUseMessage; 
+		changeExitOnceEvent->ExitOpen = InputExitOpen;
+		changeExitOnceEvent->UseMessage = UseMessage;
+		changeExitOnceEvent->AffectedExit = InputExit;
+
+		UseEventList.push_back(changeExitOnceEvent);
+	}
+
+	void addInventoryEvent(std::string InputName, std::string InputLookMessage, std::string InputBeforePickupMessage)
+	{
+		ChangeInventoryE* changeInventE = new ChangeInventoryE();
+
+		changeInventE->ItemName = InputName;
+		changeInventE->ItemLookMessage = InputLookMessage; 
+		changeInventE->BeforePickUpmessage = InputBeforePickupMessage;
+
+		UseEventList.push_back(changeInventE);
+	}
+
+	void AddUseEvent(std::string InputUseMessage)
+	{
+		MessageE* message = new MessageE(InputUseMessage);
+
+		UseEventList.push_back(message);
+	}
+
+	void CheckItemParams(ToolItem* InputItem)
+	{
+		if (InputItem->Strength >= requiredSTR)
+		{
+			std::cout << "Do stuff hre please ty";
+		}
+
+		else
+		{
+			std::cout << "pic fail";
+		}
+	}
+
+	
 };
 
 class ExitChangingObject : public WorldObject
@@ -86,6 +146,17 @@ public:
 	void ChangeUseMessage(std::string InputUseMessage) 
 	{
 		UseMessage = InputUseMessage;
+	}
+};
+
+class ItemObject : public ExitChangingObject 
+{
+public:
+	Events Object;
+
+	void ObjectItemEvent(Exit* Inputexit, Inventory* InputInvntory) 
+	{
+		
 	}
 };
 

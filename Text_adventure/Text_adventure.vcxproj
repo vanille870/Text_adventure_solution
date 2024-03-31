@@ -145,6 +145,7 @@
     <ClInclude Include="Exits_Deca.h" />
     <ClInclude Include="InventoryItems_Deca.h" />
     <ClInclude Include="Inventory_Deca.h" />
+    <ClInclude Include="Events_Deca.h" />
     <ClInclude Include="Locations_Declarations.h" />
     <ClInclude Include="ObjectFunctionsDeca.h" />
     <ClInclude Include="RandomNumber_Deca.h" />

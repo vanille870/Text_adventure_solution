@@ -4,10 +4,11 @@
 #include <map>
 #include <utility>
 #include <functional>
-#include "Locations_Declarations.h"
-#include "Inventory_Deca.h"
 
-
+class Navigator;
+class LocationMap;
+class Inventory;
+class ActionMap;
 
 class ActionMap
 {

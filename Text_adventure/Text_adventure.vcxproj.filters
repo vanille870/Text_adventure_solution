@@ -74,5 +74,8 @@
     <ClInclude Include="InventoryItems_Deca.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Events_Deca.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

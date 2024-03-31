@@ -12,5 +12,10 @@ Inventory* InitializeInventory()
 	PlayerInventoryP->AdditemToInventory("hatchet", "A worn hatchet");
 	PlayerInventoryP->AdditemToInventory("sword", "A rusty sword");
 
+	ToolItem* axe = new ToolItem("slash", 50);
+	axe->Name = "AXE";
+	PlayerInventoryP->Map["AXE"] = axe;
+
+
 	return PlayerInventoryP;
 }

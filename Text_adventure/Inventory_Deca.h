@@ -29,6 +29,7 @@ public:
 	{
 		MaxSize = InputMaxSize;
 		DefaultInventoryItem.Name = "DEFAULT";
+		DefaultInventoryItem.IsDefault = true;
 	}
 
 	InventoryItem* FindItemInInventory(std::string InputName) 

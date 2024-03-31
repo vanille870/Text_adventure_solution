@@ -60,6 +60,10 @@ void CreateMapOfActions(ActionMap* InputActionMapP)
 	InputActionMapP->LoadActionToMap(9, "CHECKITEM");
 	InputActionMapP->LoadActionToMap(9, "CI");
 	InputActionMapP->LoadActionToMap(9, "CHECKINVENTORY");
+
+	InputActionMapP->LoadActionToMap(10, "UI");
+	InputActionMapP->LoadActionToMap(10, "USEITEM");
+	InputActionMapP->LoadActionToMap(10, "ITEMUSE");
 }
 
 void DisplayHelp()
@@ -110,7 +114,9 @@ void UseObject(Navigator* InputNavigator, Inventory* InputInventory)
 
 	tempObjectP = InputNavigator->CurrentLocation.FindObjectInLocation(tempString);
 
-	if (tempObjectP->ObjectType != "Default")
+	tempObjectP->TriggerEvents(InputInventory, &InputNavigator->CurrentLocation.Map);
+
+	/*if (tempObjectP->ObjectType != "Default")
 	{
 		if (tempObjectP->ObjectType == "Exit")
 		{ 
@@ -123,7 +129,7 @@ void UseObject(Navigator* InputNavigator, Inventory* InputInventory)
 		{
 			tempObjectP->PickUpObject(InputInventory);
 		}
-	}
+	}*/
 
 
 	//cout << InputNavigator->CurrentLocation.ExitMap[tempObject->AffectedExitDirection]->BlockedMessage;
@@ -173,6 +179,52 @@ void CheckInvntoryItem(Inventory* inputInventory)
 	tempItem = inputInventory->FindItemInInventory(tempString);  
 
 	cout << tempItem->CheckMessage << endl << endl; 
+}
+
+void UseItemOnObject(Inventory* inputInventory, Location* InputLocation)
+{
+	std::string tempString;
+	InventoryItem* tempItem; 
+	ToolItem* ItemCast; 
+	WorldObject* tempWO;
+
+	cout << "what are you using?" << endl << endl;
+	cin >> tempString;
+
+	tempItem = inputInventory->FindItemInInventory(tempString);
+	ItemCast = dynamic_cast<ToolItem*>(tempItem);
+
+
+	if (tempItem->IsDefault == true)
+	{
+		return;
+	}
+
+	else if(tempItem->CanBeUsed == false)
+	{
+		cout << "this can't be used" << std::endl;
+		return;
+	}
+
+
+
+	cout << "what are you using it on?" << endl << endl;
+	cin >> tempString;
+
+	tempWO = InputLocation->FindObjectInLocation(tempString);
+
+	if (tempWO->IsDefault == true)
+	{
+		return;
+	}
+
+	else if (tempWO->itemCanBeUsedOn == false)
+	{
+		cout << "no" << std::endl;
+		return;
+	}
+
+	
 }
 
 
@@ -229,6 +281,10 @@ void EnterAction(ActionMap* InputActionMapP, Navigator* InputNavigator, Location
 
 		case 9:
 			CheckInvntoryItem(InputPlayerInventory); 
+			break;
+
+		case 10:
+			UseItemOnObject(InputPlayerInventory, &InputNavigator->CurrentLocation);
 			break;
 
 		default:
