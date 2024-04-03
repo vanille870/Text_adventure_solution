@@ -17,11 +17,11 @@ void CreateMapOfLocations(LocationMap* InputLocationMap)
 
     forest->AddExit("cave", "Blocked by fallen tree", 'W', false);
 
-    WorldObject* Treelog = forest->AddObject("TREELOG");
-    Treelog->AddExitvent(forest->ExitMap['W'], true, "You already pushed the log out of the way", "you push the log out of the way");
-    Treelog->addInventoryEvent(Treelog->Name, "A big sturdy log", "pick the log up?");
+    WorldObject* Treelog = forest->AddObject("TREELOG", 20);
+    Treelog->AddExitvent(forest->ExitMap['W'], true, "You already pushed the log out of the way", "you push the log out of the way", Treelog->UseEventList);
+    Treelog->addInventoryEvent(Treelog->Name, "A big sturdy log", "pick the log up?", Treelog->UseEventList);
 
-    WorldObject* Tree = forest->AddObject("TREE");
+    WorldObject* Tree = forest->AddObject("TREE", 30);
     Tree->AddUseEvent("You pull at the tree to no avail");
 
 

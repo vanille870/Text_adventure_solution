@@ -191,6 +191,8 @@ void UseItemOnObject(Inventory* inputInventory, Location* InputLocation)
 	cout << "what are you using?" << endl << endl;
 	cin >> tempString;
 
+	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
+
 	tempItem = inputInventory->FindItemInInventory(tempString);
 	ItemCast = dynamic_cast<ToolItem*>(tempItem);
 
@@ -211,6 +213,8 @@ void UseItemOnObject(Inventory* inputInventory, Location* InputLocation)
 	cout << "what are you using it on?" << endl << endl;
 	cin >> tempString;
 
+	transform(tempString.begin(), tempString.end(), tempString.begin(), toupper); 
+
 	tempWO = InputLocation->FindObjectInLocation(tempString);
 
 	if (tempWO->IsDefault == true)
@@ -223,6 +227,8 @@ void UseItemOnObject(Inventory* inputInventory, Location* InputLocation)
 		cout << "no" << std::endl;
 		return;
 	}
+
+	tempWO->CheckItemParams(ItemCast);
 
 	
 }

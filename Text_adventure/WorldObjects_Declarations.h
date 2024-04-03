@@ -6,6 +6,25 @@
 #include "Inventory_Deca.h"
 #include "Events_Deca.h"
 
+template <typename T>
+void TriggerEvents(T InputMap, Inventory* InputInv, std::map<std::string, WorldObject*>* InputObjctMap)
+{
+	for (Events* Events : InputMap)
+	{
+		Events->UseFunction(InputInv, InputObjctMap); 
+	} 
+}; 
+
+template <typename T>
+void AddEventToMap(T InputMap, Inventory* InputInv)
+{
+	for (Events* Events : InputMap)
+	{
+		Events->UseFunction(InputInv, InputObjctMap);
+	}
+};
+
+
 class WorldObject
 {
 public:
@@ -19,7 +38,7 @@ public:
 	int requiredSTR;
 
 	std::vector<Events*> UseEventList; 
-	std::vector<Events*> ItemEventListCut;
+	std::vector<Events*> CutItemEvenList;
 
 	WorldObject()
 	{
@@ -44,13 +63,26 @@ public:
 
 	void TriggerEvents(Inventory* InputInventory, std::map<std::string, WorldObject*>* InputObjctMap)
 	{
-		for (Events* ObjectEvent : UseEventList)
+		for (Events* Events : UseEventList) 
 		{
-			ObjectEvent->UseFunction(InputInventory, InputObjctMap);
+			Events->UseFunction(InputInventory, InputObjctMap);
 		}
 	}
 
-	void AddExitvent(Exit* InputExit, bool InputExitOpen, std::string InputAfterUseMessage, std::string UseMessage)
+	void TriggerCutEvents(Inventory* InputInventory, std::map<std::string, WorldObject*>* InputObjctMap)
+	{
+		for (Events* Events : CutItemEvenList)
+		{
+			Events->UseFunction(InputInventory, InputObjctMap);
+		}
+	}
+
+	void AddEventToMap(Events* InputEvent, std::vector<Events*> InputVector)
+	{
+		InputVector.push_back(InputEvent);
+	}
+
+	void AddExitvent(Exit* InputExit, bool InputExitOpen, std::string InputAfterUseMessage, std::string UseMessage, std::vector<Events*> InputVector)
 	{
 		ChangeExitOnceE* changeExitOnceEvent = new ChangeExitOnceE();
 
@@ -59,10 +91,10 @@ public:
 		changeExitOnceEvent->UseMessage = UseMessage;
 		changeExitOnceEvent->AffectedExit = InputExit;
 
-		UseEventList.push_back(changeExitOnceEvent);
+		InputVector.push_back(changeExitOnceEvent); 
 	}
 
-	void addInventoryEvent(std::string InputName, std::string InputLookMessage, std::string InputBeforePickupMessage)
+	void addInventoryEvent(std::string InputName, std::string InputLookMessage, std::string InputBeforePickupMessage, std::vector<Events*> InputVector)
 	{
 		ChangeInventoryE* changeInventE = new ChangeInventoryE();
 
@@ -70,27 +102,27 @@ public:
 		changeInventE->ItemLookMessage = InputLookMessage; 
 		changeInventE->BeforePickUpmessage = InputBeforePickupMessage;
 
-		UseEventList.push_back(changeInventE);
+		InputVector.push_back(changeInventE);
 	}
 
-	void AddUseEvent(std::string InputUseMessage)
+	void AddUseEvent(std::string InputUseMessage, std::vector<Events*> InputVector)
 	{
 		MessageE* message = new MessageE(InputUseMessage);
 
-		UseEventList.push_back(message);
+		InputVector.push_back(message);
 	}
 
 	void CheckItemParams(ToolItem* InputItem)
 	{
 		if (InputItem->Strength >= requiredSTR)
 		{
-			std::cout << "Do stuff hre please ty";
+			TriggerCutEvents();
 		}
 
 		else
 		{
-			std::cout << "pic fail";
-		}
+			std::cout << "epic fail" << std::endl; 
+		} 
 	}
 
 	

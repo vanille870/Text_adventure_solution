@@ -166,11 +166,12 @@ public:
 		ExitMap[InputExitDirection] = NewExit;
 	}
 
-	WorldObject* AddObject(std::string InputObjectName)
+	WorldObject* AddObject(std::string InputObjectName, int InputRequiredStrength)
 	{
 		WorldObject* NewWorldObject = new WorldObject();
 
 		NewWorldObject->Name = InputObjectName;
+		NewWorldObject->requiredSTR = InputRequiredStrength;
 
 		Map[InputObjectName] = NewWorldObject;
 
